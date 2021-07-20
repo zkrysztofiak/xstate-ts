@@ -16,14 +16,10 @@ function App() {
 					<Button variant='primary'>Guziczek</Button>
 				</div>
 				<div className='grid-item-center '>
-					<div className='grid-item-center'>
-						<Button variant='success'>Guziczek</Button>
-					</div>
+					<Button variant='success'>Guziczek</Button>
 				</div>
 				<div className='grid-item-right'>
-					<div className='grid-item-center'>
-						<Button variant='warning'>Guziczek</Button>
-					</div>
+					<Button variant='warning'>Guziczek</Button>
 				</div>
 				<div className='grid-item-center '>1fr</div>
 				<div className='grid-item-right'>1fr</div>
