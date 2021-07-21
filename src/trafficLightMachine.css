@@ -1,6 +1,6 @@
 body {
-	height: 100vh;
-	display: flex;
+	/* height: 100vh;
+	display: flex; */
 	justify-content: center;
 	align-items: center;
 }
@@ -42,5 +42,9 @@ input:checked {
 	opacity: 1;
 }
 .containerLights {
+	/* height: 100vh; */
+	display: flex;
 	width: 100px;
+	justify-content: center;
+	align-items: center;
 }
