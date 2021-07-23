@@ -1,3 +1,11 @@
+// As shorthand, in XState, events that only have a type can be represented just by their string type:
+// equivalent to { type: 'TIMER' }
+// const timerEvent = 'TIMER';
+
+        // state transition (shorthand)
+        // this is equivalent to { target: 'resolved' }
+        // RESOLVE: 'resolved',
+
 import { createMachine } from "xstate";
 
 type TrafficLightEvent = { type: "NEXT" };
