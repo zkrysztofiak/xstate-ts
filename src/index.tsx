@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 import './index.css';
-import App from './App';
-import TrafficLights from './TrafficLights';
+import ZapoNaPlatnosc from './ZapoNaPlatnosc';
+// import TrafficLights from './TrafficLights';
 
 // ReactDOM.render(
 // 	<React.StrictMode>
@@ -15,8 +15,8 @@ import TrafficLights from './TrafficLights';
 const rootElement = document.getElementById('root');
 render(
 	<section>
-		<TrafficLights />
-		<App />
+		{/* <TrafficLights /> */}
+		<ZapoNaPlatnosc />
 	</section>,
 	rootElement
 );

@@ -17,6 +17,9 @@ export const zapoNaPlatnoscMachine = createMachine({
 			},
 		},
 		pobieranieWoP: {
+			after: {
+				1000: 'pobranoDaneWoP',
+			},
 			on: {
 				OK: 'pobranoDaneWoP',
 				ERROR: 'failureWoP',
@@ -44,9 +47,19 @@ export const zapoNaPlatnoscMachine = createMachine({
 			on: { PRZEKAZ2BFK: 'przesylanieDanychUtylizacjiWoP' }, //side action - Aktualizuj montaż finansowy
 		},
 		przesylanieDanychUtylizacjiWoP: {
-			on: { PRZEKAZ2BFK: 'testWykorzystania100procent' },
+			on: { PRZESLIJ_UTYL_WoP: 'przeslanoDaneUtylizacjiWoP' },
 		},
-		testWykorzystania100procent: {
+		przeslanoDaneUtylizacjiWoP: {
+			on: {
+				AKTUALIZUJ_MONTAZ_FIN: 'aktualizacjaMontazuFin',
+				TESTUJ_WYK100PR: 'testWyk100procent',
+			},
+		},
+		aktualizacjaMontazuFin: {
+			on: { AKTUALNY_MONTAZ_FIN: 'montazFinAktualny' },
+		},
+		montazFinAktualny: {},
+		testWyk100procent: {
 			on: {
 				TAK_WYK100PR: 'koniec',
 				PONIZEJ_WYK100PR: 'idle',
