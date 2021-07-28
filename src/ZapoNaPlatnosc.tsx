@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Spinner, CloseButton } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useMachine } from '@xstate/react';
@@ -7,12 +7,14 @@ import { zapoNaPlatnoscMachine } from './zapoNaPlatnoscMachine';
 
 function ZapoNaPlatnosc() {
 	const [current, send] = useMachine(zapoNaPlatnoscMachine);
+	console.log(current.context.kwotaZnP);
 	return (
 		<table className='containerZnP'>
 			<thead>
 				<tr>
-					<th colSpan={5}>{current.matches('pobieranieWoP') && <Spinner animation='border' aria-hidden='true' />}</th>
-					<th colSpan={5}>{current.value}</th>
+					<th colSpan={2}>{current.matches('pobieranieWoP') && <Spinner animation='border' aria-hidden='true' />}</th>
+					<th colSpan={4}>{current.value}</th>
+					<th colSpan={4}>kwotaZnP: {current.context.kwotaZnP}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -23,6 +25,7 @@ function ZapoNaPlatnosc() {
 					<td>03fr</td>
 					<td>04fr</td>
 					<td>
+						{/* <ProgressBar now={60} /> */}
 						<Button variant='primary' disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('AKTUALNY_MONTAZ_FIN')}>
 							AKTUALNY_MONTAZ_FIN
 						</Button>
@@ -84,12 +87,12 @@ function ZapoNaPlatnosc() {
 					<td>21fr</td>
 					<td>
 						<Button variant='primary' disabled={!current.matches('testPokrycia100procent')} onClick={() => send('PONIZEJ100PR')}>
-							PONIZEJ100PR
+							PONIZEJ 100%
 						</Button>
 					</td>
 					<td>
 						<Button variant='primary' disabled={!current.matches('pomniejszanieKwotyWoP')} onClick={() => send('DONE_POMNIEJSZONO')}>
-							DONE_POMNIEJSZONO
+							POMNIEJSZONO
 						</Button>
 					</td>
 					<td>24fr</td>
