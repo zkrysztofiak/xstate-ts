@@ -1,4 +1,3 @@
-@import './trafficLightMachine.css';
 .App {
 	text-align: center;
 }
@@ -45,8 +44,9 @@
 	min-height: 66px;
 }
 
-.containerZnP .btn-primary:disabled {
+.containerZnP .ant-btn:disabled {
 	background-color: red;
+	color: white;
 	opacity: 0.2;
 }
 .containerZnP td {
@@ -54,5 +54,10 @@
 }
 .containerZnP th {
 	height: 66px;
+	text-align: center;
+}
+.containerZnP .td_form1 {
+	height: 366px;
+	padding: 22px;
 	text-align: center;
 }
