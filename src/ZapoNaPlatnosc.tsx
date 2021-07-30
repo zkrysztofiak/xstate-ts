@@ -9,13 +9,14 @@ import { Form1 } from './Form1';
 function ZapoNaPlatnosc() {
 	const [current, send] = useMachine(zapoNaPlatnoscMachine);
 	console.log(current.context.kwotaZnP);
+	const handleOnClickForm1 = () => console.log('handleOnClick');
 	return (
 		<>
 			<table className='containerZnP'>
 				<thead>
 					<tr>
-						<th colSpan={2}>{current.matches('pobieranieWoP') && <Spin tip="Loading..." />}</th>
-						<th colSpan={4}>{current.value}</th>
+						<th colSpan={2}>{current.matches('pobieranieWoP') && <Spin tip='Loading...' />}</th>
+						<th colSpan={4}>Status: {current.value}</th>
 						<th colSpan={4}>kwotaZnP: {current.context.kwotaZnP}</th>
 					</tr>
 				</thead>
@@ -28,7 +29,7 @@ function ZapoNaPlatnosc() {
 						<td>04fr</td>
 						<td>
 							{/* <ProgressBar now={60} /> */}
-							<Button type="primary" disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('AKTUALNY_MONTAZ_FIN')}>
+							<Button type='primary' disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('AKTUALNY_MONTAZ_FIN')}>
 								AKTUALNY_MONTAZ_FIN
 							</Button>
 						</td>
@@ -39,47 +40,47 @@ function ZapoNaPlatnosc() {
 					</tr>
 					<tr>
 						<td>
-							<Button type="primary" disabled={!current.matches('idle')} onClick={() => send('POBIERZ_ZWoP')}>
+							<Button type='primary' disabled={!current.matches('idle')} onClick={() => send('POBIERZ_ZWoP')}>
 								POBIERZ_ZWoP
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('pobranoDaneWoP')} onClick={() => send('TESTUJ_POKRYCIE100PR')}>
+							<Button type='primary' disabled={!current.matches('pobranoDaneWoP')} onClick={() => send('TESTUJ_POKRYCIE100PR')}>
 								TESTUJ_POKRYCIE100PR
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('testPokrycia100procent')} onClick={() => send('TAK100PR')}>
+							<Button type='primary' disabled={!current.matches('testPokrycia100procent')} onClick={() => send('TAK100PR')}>
 								TAK100PR
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('akceptacjaKierDWB')} onClick={() => send('AKCEPT_KIER_DWB')}>
+							<Button type='primary' disabled={!current.matches('akceptacjaKierDWB')} onClick={() => send('AKCEPT_KIER_DWB')}>
 								AKCEPT_KIER_DWB
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('przekazanieZnP2BFK')} onClick={() => send('PRZEKAZ2BFK')}>
+							<Button type='primary' disabled={!current.matches('przekazanieZnP2BFK')} onClick={() => send('PRZEKAZ2BFK')}>
 								PRZEKAZ2BFK
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('przesylanieDanychUtylizacjiWoP')} onClick={() => send('PRZESLIJ_UTYL_WoP')}>
+							<Button type='primary' disabled={!current.matches('przesylanieDanychUtylizacjiWoP')} onClick={() => send('PRZESLIJ_UTYL_WoP')}>
 								PRZESLIJ_UTYL_WoP
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('TESTUJ_WYK100PR')}>
+							<Button type='primary' disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('TESTUJ_WYK100PR')}>
 								TESTUJ_WYK100PR
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('testWyk100procent')} onClick={() => send('TAK_WYK100PR')}>
+							<Button type='primary' disabled={!current.matches('testWyk100procent')} onClick={() => send('TAK_WYK100PR')}>
 								TAK_WYK100PR
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('koniec')} onClick={() => send('TAK_WYK100PR')}>
+							<Button type='primary' disabled={!current.matches('koniec')} onClick={() => send('TAK_WYK100PR')}>
 								KONEC
 							</Button>
 						</td>
@@ -88,12 +89,12 @@ function ZapoNaPlatnosc() {
 						<td>20fr</td>
 						<td>21fr</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('testPokrycia100procent')} onClick={() => send('PONIZEJ100PR')}>
+							<Button type='primary' disabled={!current.matches('testPokrycia100procent')} onClick={() => send('PONIZEJ100PR')}>
 								PONIZEJ 100%
 							</Button>
 						</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('pomniejszanieKwotyWoP')} onClick={() => send('DONE_POMNIEJSZONO')}>
+							<Button type='primary' disabled={!current.matches('pomniejszanieKwotyWoP')} onClick={() => send('DONE_POMNIEJSZONO')}>
 								POMNIEJSZONO
 							</Button>
 						</td>
@@ -101,7 +102,7 @@ function ZapoNaPlatnosc() {
 						<td>25fr</td>
 						<td>26fr</td>
 						<td>
-							<Button type="primary" disabled={!current.matches('testWyk100procent')} onClick={() => send('PONIZEJ_WYK100PR')}>
+							<Button type='primary' disabled={!current.matches('testWyk100procent')} onClick={() => send('PONIZEJ_WYK100PR')}>
 								PONIZEJ_WYK100PR
 							</Button>
 						</td>
@@ -109,11 +110,10 @@ function ZapoNaPlatnosc() {
 						<td>29fr</td>
 					</tr>
 					<tr>
-						<td className='td_form1' colSpan={5}>
-							{current.matches('pomniejszanieKwotyWoP') && <Form1 kwotaZnP={current.context.kwotaZnP} />}
-
+						<td className='td_form1' colSpan={3}>
+							{current.matches('pomniejszanieKwotyWoP') && <Form1 kwotaZnP={current.context.kwotaZnP} kwotaMinus={current.context.kwotaMinus} handleOnClick={handleOnClickForm1} />}
 						</td>
-						<td colSpan={5}>
+						<td colSpan={7}>
 							{/* <pre style={{ textAlign: "left" }}>
 							{JSON.stringify(	{ value: current.value, context: current.context }, null,	2)}
 						</pre> */}
@@ -124,7 +124,5 @@ function ZapoNaPlatnosc() {
 		</>
 	);
 }
-
-
 
 export default ZapoNaPlatnosc;

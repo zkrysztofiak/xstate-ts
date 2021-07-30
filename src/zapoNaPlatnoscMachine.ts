@@ -12,8 +12,7 @@ export const zapoNaPlatnoscMachine = createMachine(
 		id: 'zapoNaPlatnosc',
 		context: {
 			kwotaZnP: 100,
-			kwotaMinusManual: 13,
-			kwotaN: 13,
+			kwotaMinus: 13,
 		},
 		initial: 'idle',
 		states: {

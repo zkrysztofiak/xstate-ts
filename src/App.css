@@ -45,7 +45,7 @@
 }
 
 .containerZnP .ant-btn:disabled {
-	background-color: red;
+	background-color: grey;
 	color: white;
 	opacity: 0.2;
 }
