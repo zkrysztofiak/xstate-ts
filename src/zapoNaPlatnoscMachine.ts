@@ -10,7 +10,11 @@ import { createMachine, assign } from 'xstate';
 export const zapoNaPlatnoscMachine = createMachine(
 	{
 		id: 'zapoNaPlatnosc',
-		context: { kwotaZnP: 100 },
+		context: {
+			kwotaZnP: 100,
+			kwotaMinusManual: 13,
+			kwotaN: 13,
+		},
 		initial: 'idle',
 		states: {
 			idle: {
@@ -80,7 +84,7 @@ export const zapoNaPlatnoscMachine = createMachine(
 	{
 		actions: {
 			increment: assign({ kwotaZnP: (context) => context.kwotaZnP + 1 }),
-			decrement: assign({ kwotaZnP: (context) => context.kwotaZnP - 30 }),
+			decrement: assign({ kwotaZnP: (context) => context.kwotaZnP - context.kwotaMinus }),
 		},
 	}
 );
