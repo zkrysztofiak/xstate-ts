@@ -23,7 +23,7 @@ export const zapoNaPlatnoscMachine = createMachine(
 			},
 			pobieranieWoP: {
 				after: {
-					1000: 'pobranoDaneWoP',
+					500: 'pobranoDaneWoP',
 				},
 				on: {
 					OK: 'pobranoDaneWoP',
@@ -82,8 +82,11 @@ export const zapoNaPlatnoscMachine = createMachine(
 	},
 	{
 		actions: {
+			// actions: assign({ user: (context, event) => event.data })
 			increment: assign({ kwotaZnP: (context) => context.kwotaZnP + 1 }),
-			decrement: assign({ kwotaZnP: (context) => context.kwotaZnP - context.kwotaMinus }),
+			// decrement: (context, event) => console.log('event =', event.kwotaMinus )
+			decrement: assign({kwotaMinus: (context, event) => event.kwotaMinus })
+			// decrement: assign({ kwotaZnP: (context) => context.kwotaZnP - context.kwotaMinus }),
 		},
 	}
 );
