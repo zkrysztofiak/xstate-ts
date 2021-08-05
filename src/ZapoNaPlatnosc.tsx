@@ -4,8 +4,8 @@ import 'antd/dist/antd.css';
 import './App.css';
 import { useMachine } from '@xstate/react';
 import { zapoNaPlatnoscMachine } from './zapoNaPlatnoscMachine';
-import { Form1 } from './Form1';
-// import { Form2 } from './Form2';
+// import { Form1 } from './Form1';
+import { Form2 } from './Form2';
 
 function ZapoNaPlatnosc() {
 	// interface Fields {
@@ -15,11 +15,11 @@ function ZapoNaPlatnosc() {
 	const [current, send] = useMachine(zapoNaPlatnoscMachine);
 	// console.log(current.context.kwotaZnP);
 	// const handleOnClickForm1 = () => console.log('handleOnClick');
-	const handleOnFinishForm1 = (values: any) => {
+	const handleOnFinishForm2 = (values: any) => {
 		console.log(values);
-		console.log(values.kwotaMinus + 12);
-		send('DONE_POMNIEJSZONO', { kwotaMinus: values.kwotaMinus, dupa: 3434 });
-	}
+		console.log(values.potracenia);
+		send('DONE_POMNIEJSZONO', { potracenia: values.potracenia, doplataReklamacja: values.doplataReklamacja, pupa: 3434 });
+	};
 	return (
 		<>
 			<table className='containerZnP'>
@@ -27,7 +27,7 @@ function ZapoNaPlatnosc() {
 					<tr>
 						<th colSpan={2}>{current.matches('pobieranieWoP') && <Spin tip='Loading...' />}</th>
 						<th colSpan={4}>Status: {current.value}</th>
-						<th colSpan={4}>kwotaZnP: {current.context.kwotaZnP}</th>
+						<th colSpan={4}>kwotaZnP: {current.context.fetched.kwotaZnP}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -39,9 +39,7 @@ function ZapoNaPlatnosc() {
 						<td>04fr</td>
 						<td>
 							{/* <ProgressBar now={60} /> */}
-							<Button type='primary' disabled={!current.matches('przeslanoDaneUtylizacjiWoP')}
-								onClick={() => send('AKTUALNY_MONTAZ_FIN')}
-							>
+							<Button type='primary' disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('AKTUALNY_MONTAZ_FIN')}>
 								AKTUALNY_MONTAZ_FIN
 							</Button>
 						</td>
@@ -114,9 +112,7 @@ function ZapoNaPlatnosc() {
 						<td>25fr</td>
 						<td>26fr</td>
 						<td>
-							<Button
-								type='primary' disabled={!current.matches('testWyk100procent')}
-								onClick={() => send('PONIZEJ_WYK100PR')}>
+							<Button type='primary' disabled={!current.matches('testWyk100procent')} onClick={() => send('PONIZEJ_WYK100PR')}>
 								PONIZEJ_WYK100PR
 							</Button>
 						</td>
@@ -125,19 +121,18 @@ function ZapoNaPlatnosc() {
 					</tr>
 					<tr>
 						<td className='td_form1' colSpan={3}>
-							{current.matches('pomniejszanieKwotyWoP') &&
-								<Form1
-									kwotaZnP={current.context.kwotaZnP}
-									kwotaMinus={current.context.kwotaMinus}
+							{current.matches('pomniejszanieKwotyWoP') && (
+								<Form2
+									kwotaZnP={current.context.fetched.kwotaZnP}
+									doplataReklamacja={current.context.fetched.doplataReklamacja}
+									potracenia={current.context.fetched.potracenia}
 									// handleOnClick={handleOnClickForm1}
-									handleOnFinish={handleOnFinishForm1}
+									handleOnFinish={handleOnFinishForm2}
 								/>
-							}
+							)}
 						</td>
 						<td colSpan={7}>
-							<pre style={{ textAlign: "left" }}>
-								{JSON.stringify({ value: current.value, context: current.context }, null, 2)}
-							</pre>
+							<pre style={{ textAlign: 'left' }}>{JSON.stringify({ value: current.value, context: current.context }, null, 2)}</pre>
 						</td>
 					</tr>
 				</tbody>

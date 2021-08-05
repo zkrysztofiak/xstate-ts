@@ -5,15 +5,40 @@
 // state transition (shorthand)
 // this is equivalent to { target: 'resolved' }
 // RESOLVE: 'resolved',
-import { createMachine, assign } from 'xstate';
 
+import { createMachine, assign } from 'xstate';
+// interface Context {
+// 	WoPid: number;
+// 	kwotaZnP: number; //podstawa
+// 	doplataReklamacja?: number;
+// 	potracenia: number;
+// 	kwotaNaleznaSaldo?: number; //wyliczona z algorytmu +/-
+// 	kwotaDoWyplaty?: number; //wyliczone
+// }
+
+// const initialContext: Context = {
+const initialContext = {
+	WoPid: 2,
+	kwotaZnP: 100, //podstawa
+	doplataReklamacja: 10,
+	potracenia: 20,
+	kwotaNaleznaSaldo: 0, //wyliczona z algorytmu +/-
+	kwotaDoWyplaty: 0, //wyliczone
+	error: undefined,
+	fetched: {
+		kwotaZnP: 4100,
+		doplataReklamacja: 410,
+		potracenia: 420,
+		nalezneSaldo: 40,
+		doWyplaty: 0,
+	},
+};
+const fetchWoP = (WoPid: number) => fetch(`http://localhost:4001/WoP/${WoPid}`).then((response) => response.json());
+// export const zapoNaPlatnoscMachine = createMachine<Context>(
 export const zapoNaPlatnoscMachine = createMachine(
 	{
 		id: 'zapoNaPlatnosc',
-		context: {
-			kwotaZnP: 100,
-			kwotaMinus: 13,
-		},
+		context: initialContext,
 		initial: 'idle',
 		states: {
 			idle: {
@@ -22,12 +47,25 @@ export const zapoNaPlatnoscMachine = createMachine(
 				},
 			},
 			pobieranieWoP: {
-				after: {
-					500: 'pobranoDaneWoP',
-				},
-				on: {
-					OK: 'pobranoDaneWoP',
-					ERROR: 'failureWoP',
+				// after: {
+				// 	500: 'pobranoDaneWoP',
+				// },
+				// on: {
+				// 	OK: 'pobranoDaneWoP',
+				// 	ERROR: 'failureWoP',
+				// },
+				invoke: {
+					id: 'getUser',
+					src: (context, event) => fetchWoP(context.WoPid),
+					onDone: {
+						target: 'pobranoDaneWoP',
+						actions: 'pobieranieWoPonDone',
+					},
+					onError: {
+						target: 'failureWoP',
+						actions: 'pobieranieWoPonError',
+						// actions: console.log((context, event: any) => event.data),
+					},
 				},
 			},
 			pobranoDaneWoP: {
@@ -46,7 +84,9 @@ export const zapoNaPlatnoscMachine = createMachine(
 				on: {
 					DONE_POMNIEJSZONO: {
 						target: 'akceptacjaKierDWB',
-						actions: 'decrement',
+						// actions: 'decrement',
+						// actions: ['decrement', 'decrementAssign'],
+						actions: 'przelicz',
 					},
 				},
 			},
@@ -83,10 +123,14 @@ export const zapoNaPlatnoscMachine = createMachine(
 	{
 		actions: {
 			// actions: assign({ user: (context, event) => event.data })
-			increment: assign({ kwotaZnP: (context) => context.kwotaZnP + 1 }),
-			// decrement: (context, event) => console.log('event =', event.kwotaMinus )
-			decrement: assign({kwotaMinus: (context, event) => event.kwotaMinus })
-			// decrement: assign({ kwotaZnP: (context) => context.kwotaZnP - context.kwotaMinus }),
+			// increment: assign({ kwotaZnP: (context) => context.kwotaZnP + 1 }),
+			przelicz: (context, event: any) => console.log('event =', event),
+			// decrementAssign: assign({ potracenia: (context, event: any) => event.potracenia }),
+			// decrement: assign({ kwotaZnP: (context, event: any) => context.kwotaZnP - event.potracenia }),
+			// przelicz: assign({ kwotaZnP: (context, event: any) => context.kwotaZnP - event.potracenia + event.doplataReklamacja }),
+			// pobieranieWoPonDone: (context, event) => console.log('event.data =', event.data),
+			pobieranieWoPonDone: assign({ fetched: (_, event: any) => event.data }),
+			pobieranieWoPonError: assign({ error: (_, event: any) => event.data }),
 		},
 	}
 );

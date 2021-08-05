@@ -1,54 +1,51 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
-import { useMachine } from '@xstate/react';
-import { zapoNaPlatnoscMachine } from './zapoNaPlatnoscMachine';
-
 
 interface Fields {
-	kwotaZnP: number
-	kwotaMinus: number
+	kwotaZnP: number; //podstawa
+	doplataReklamacja?: number;
+	potracenia: number;
+	nalezneSaldo?: number; //wyliczona z algorytmu +/-
+	doWyplaty?: number; //wyliczone
 }
-
-interface Form1Props {
-	kwotaZnP: number;
-	kwotaMinus: number;
-	name?: string;
+interface Form1Props extends Fields {
 	// handleOnClick?: () => void;
-	// handleOnFinish?: (changedFields: Fields) => void;
+	handleOnFinish?: (changedFields: Fields) => void;
 }
-// const handleOnFinish = (changedFields: Fields) => console.log(changedFields);
-// const handleOnFinish = (values: Fields) => console.log(values);
 
-
-
-// export const Form1: React.FC<Form1Props> = (props) => {
-export const Form2 = (props: Form1Props) => {
-	const [current, send] = useMachine(zapoNaPlatnoscMachine);
-	const handleOnFinish = (allFields: Fields) => {
-		console.log(allFields);
-		console.log(current);
-		send('DONE_POMNIEJSZONO');
-		console.log(current);
-	}
+// export const Form2: React.FC<Form1Props> = ({ kwotaZnP, potracenia, handleOnFinish }) => {
+export const Form2: React.FC<Form1Props> = (props) => {
 	return (
 		<div className=''>
 			<>
 				<Form
 					layout='vertical'
 					initialValues={{
-						kwotaZnP: current.context.kwotaZnP,
-						kwotaMinus: current.context.kwotaMinus
+						kwotaZnP: props.kwotaZnP,
+						potracenia: props.potracenia,
+						doplataReklamacja: props.doplataReklamacja,
+						nalezneSaldo: props.nalezneSaldo,
+						doWyplaty: props.nalezneSaldo,
 					}}
-					onFinish={handleOnFinish}>
-					<Form.Item label='kwotaZnP' name='kwotaZnP'>
+					onFinish={props.handleOnFinish}>
+					<Form.Item label='KwotaZnP' name='kwotaZnP'>
 						<Input />
 					</Form.Item>
-					<Form.Item label='Pomniejsz o:' name='kwotaMinus'>
+					<Form.Item label='Dopłata z reklamacji:' name='doplataReklamacja'>
+						<Input />
+					</Form.Item>
+					<Form.Item label='Potrącenia:' name='potracenia'>
+						<Input />
+					</Form.Item>
+					<Form.Item label='Kwota nalezna/Saldo:' name='nalezneSaldo'>
+						<Input />
+					</Form.Item>
+					<Form.Item label='Kwota do wyplaty:' name='doWyplaty'>
 						<Input />
 					</Form.Item>
 					<Form.Item>
 						{/* <Button type='primary' size='large' onClick={props.handleOnClick}> */}
-						<Button type='primary' size='large' htmlType="submit">
+						<Button type='primary' size='large' htmlType='submit'>
 							Submit
 						</Button>
 					</Form.Item>
