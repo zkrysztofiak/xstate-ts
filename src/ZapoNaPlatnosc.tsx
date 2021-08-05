@@ -27,7 +27,7 @@ function ZapoNaPlatnosc() {
 					<tr>
 						<th colSpan={2}>{current.matches('pobieranieWoP') && <Spin tip='Loading...' />}</th>
 						<th colSpan={4}>Status: {current.value}</th>
-						<th colSpan={4}>kwotaZnP: {current.context.fetched.kwotaZnP}</th>
+						<th colSpan={4}>kwotaZnP: {current.context.kwotaZnP}</th>
 					</tr>
 				</thead>
 				<tbody>

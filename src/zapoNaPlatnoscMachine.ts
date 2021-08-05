@@ -124,10 +124,10 @@ export const zapoNaPlatnoscMachine = createMachine(
 		actions: {
 			// actions: assign({ user: (context, event) => event.data })
 			// increment: assign({ kwotaZnP: (context) => context.kwotaZnP + 1 }),
-			przelicz: (context, event: any) => console.log('event =', event),
+			// przelicz: (context, event: any) => console.log('event =', event),
 			// decrementAssign: assign({ potracenia: (context, event: any) => event.potracenia }),
 			// decrement: assign({ kwotaZnP: (context, event: any) => context.kwotaZnP - event.potracenia }),
-			// przelicz: assign({ kwotaZnP: (context, event: any) => context.kwotaZnP - event.potracenia + event.doplataReklamacja }),
+			przelicz: assign({ kwotaZnP: (context, event: any) => context.fetched.kwotaZnP - event.potracenia + event.doplataReklamacja }),
 			// pobieranieWoPonDone: (context, event) => console.log('event.data =', event.data),
 			pobieranieWoPonDone: assign({ fetched: (_, event: any) => event.data }),
 			pobieranieWoPonError: assign({ error: (_, event: any) => event.data }),
