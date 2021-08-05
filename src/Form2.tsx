@@ -9,8 +9,7 @@ interface Fields {
 	doWyplaty?: number; //wyliczone
 }
 interface Form1Props extends Fields {
-	// handleOnClick?: () => void;
-	handleOnFinish?: (changedFields: Fields) => void;
+	handleOnFinish: (changedFields: Fields) => void;
 }
 
 // export const Form2: React.FC<Form1Props> = ({ kwotaZnP, potracenia, handleOnFinish }) => {
@@ -29,7 +28,7 @@ export const Form2: React.FC<Form1Props> = (props) => {
 					}}
 					onFinish={props.handleOnFinish}>
 					<Form.Item label='KwotaZnP' name='kwotaZnP'>
-						<Input />
+						<Input disabled={true} />
 					</Form.Item>
 					<Form.Item label='Dopłata z reklamacji:' name='doplataReklamacja'>
 						<Input />
@@ -38,10 +37,10 @@ export const Form2: React.FC<Form1Props> = (props) => {
 						<Input />
 					</Form.Item>
 					<Form.Item label='Kwota nalezna/Saldo:' name='nalezneSaldo'>
-						<Input />
+						<Input disabled={true} />
 					</Form.Item>
 					<Form.Item label='Kwota do wyplaty:' name='doWyplaty'>
-						<Input />
+						<Input disabled={true} />
 					</Form.Item>
 					<Form.Item>
 						{/* <Button type='primary' size='large' onClick={props.handleOnClick}> */}

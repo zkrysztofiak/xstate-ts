@@ -26,10 +26,10 @@ const initialContext = {
 	kwotaDoWyplaty: 0, //wyliczone
 	error: undefined,
 	fetched: {
-		kwotaZnP: 4100,
-		doplataReklamacja: 410,
-		potracenia: 420,
-		nalezneSaldo: 40,
+		kwotaZnP: 0,
+		doplataReklamacja: 0,
+		potracenia: 0,
+		nalezneSaldo: 0,
 		doWyplaty: 0,
 	},
 };
@@ -84,7 +84,6 @@ export const zapoNaPlatnoscMachine = createMachine(
 				on: {
 					DONE_POMNIEJSZONO: {
 						target: 'akceptacjaKierDWB',
-						// actions: 'decrement',
 						// actions: ['decrement', 'decrementAssign'],
 						actions: 'przelicz',
 					},

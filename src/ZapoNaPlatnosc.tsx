@@ -40,7 +40,7 @@ function ZapoNaPlatnosc() {
 						<td>
 							{/* <ProgressBar now={60} /> */}
 							<Button type='primary' disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('AKTUALNY_MONTAZ_FIN')}>
-								AKTUALNY_MONTAZ_FIN
+								AKTUALNY MONTAZ FIN.
 							</Button>
 						</td>
 						<td>06fr</td>
@@ -51,42 +51,42 @@ function ZapoNaPlatnosc() {
 					<tr>
 						<td>
 							<Button type='primary' disabled={!current.matches('idle')} onClick={() => send('POBIERZ_ZWoP')}>
-								POBIERZ_ZWoP
+								POBIERZ ZWoP z SZOBa
 							</Button>
 						</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('pobranoDaneWoP')} onClick={() => send('TESTUJ_POKRYCIE100PR')}>
-								TESTUJ_POKRYCIE100PR
+								TESTUJ POKRYCIE 100%
 							</Button>
 						</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('testPokrycia100procent')} onClick={() => send('TAK100PR')}>
-								TAK100PR
+								TAK 100%
 							</Button>
 						</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('akceptacjaKierDWB')} onClick={() => send('AKCEPT_KIER_DWB')}>
-								AKCEPT_KIER_DWB
+								AKCEPT KIER. DWB
 							</Button>
 						</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('przekazanieZnP2BFK')} onClick={() => send('PRZEKAZ2BFK')}>
-								PRZEKAZ2BFK
+								PRZEKAZ do BFK
 							</Button>
 						</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('przesylanieDanychUtylizacjiWoP')} onClick={() => send('PRZESLIJ_UTYL_WoP')}>
-								PRZESLIJ_UTYL_WoP
+								PRZESLIJ UTYL. WoP
 							</Button>
 						</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('TESTUJ_WYK100PR')}>
-								TESTUJ_WYK100PR
+								TESTUJ WYK 100%
 							</Button>
 						</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('testWyk100procent')} onClick={() => send('TAK_WYK100PR')}>
-								TAK_WYK100PR
+								TAK WYK. 100%
 							</Button>
 						</td>
 						<td>
@@ -105,7 +105,7 @@ function ZapoNaPlatnosc() {
 						</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('pomniejszanieKwotyWoP')} onClick={() => send('DONE_POMNIEJSZONO', { kwotaMinus: 66, dupa: 3435 })}>
-								POMNIEJSZONO
+								Korekty
 							</Button>
 						</td>
 						<td>24fr</td>
@@ -113,7 +113,7 @@ function ZapoNaPlatnosc() {
 						<td>26fr</td>
 						<td>
 							<Button type='primary' disabled={!current.matches('testWyk100procent')} onClick={() => send('PONIZEJ_WYK100PR')}>
-								PONIZEJ_WYK100PR
+								PONIZEJ WYK. 100%
 							</Button>
 						</td>
 						<td>28fr</td>
@@ -126,13 +126,12 @@ function ZapoNaPlatnosc() {
 									kwotaZnP={current.context.fetched.kwotaZnP}
 									doplataReklamacja={current.context.fetched.doplataReklamacja}
 									potracenia={current.context.fetched.potracenia}
-									// handleOnClick={handleOnClickForm1}
 									handleOnFinish={handleOnFinishForm2}
 								/>
 							)}
 						</td>
 						<td colSpan={7}>
-							<pre style={{ textAlign: 'left' }}>{JSON.stringify({ value: current.value, context: current.context }, null, 2)}</pre>
+							{/* <pre style={{ textAlign: 'left' }}>{JSON.stringify({ value: current.value, context: current.context }, null, 2)}</pre> */}
 						</td>
 					</tr>
 				</tbody>
