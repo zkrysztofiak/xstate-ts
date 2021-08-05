@@ -6,6 +6,7 @@ import { useMachine } from '@xstate/react';
 import { zapoNaPlatnoscMachine } from './zapoNaPlatnoscMachine';
 // import { Form1 } from './Form1';
 import { Form2 } from './Form2';
+import { FormNrWoP } from './FormNrWoP';
 
 function ZapoNaPlatnosc() {
 	// interface Fields {
@@ -19,6 +20,10 @@ function ZapoNaPlatnosc() {
 		console.log(values);
 		console.log(values.potracenia);
 		send('DONE_POMNIEJSZONO', { potracenia: values.potracenia, doplataReklamacja: values.doplataReklamacja, pupa: 3434 });
+	};
+	const handleOnFinishFormNrWoP = (values: any) => {
+		console.log(values);
+		send('NR_WoP_POBRANY', { nrWoP: values.nrWoP, pupa: 1313 });
 	};
 	return (
 		<>
@@ -38,7 +43,6 @@ function ZapoNaPlatnosc() {
 						<td>03fr</td>
 						<td>04fr</td>
 						<td>
-							{/* <ProgressBar now={60} /> */}
 							<Button type='primary' disabled={!current.matches('przeslanoDaneUtylizacjiWoP')} onClick={() => send('AKTUALNY_MONTAZ_FIN')}>
 								AKTUALNY MONTAZ FIN.
 							</Button>
@@ -51,7 +55,7 @@ function ZapoNaPlatnosc() {
 					<tr>
 						<td>
 							<Button type='primary' disabled={!current.matches('idle')} onClick={() => send('POBIERZ_ZWoP')}>
-								POBIERZ ZWoP z SZOBa
+								POBIERZ WoP z SZOBa
 							</Button>
 						</td>
 						<td>
@@ -120,7 +124,13 @@ function ZapoNaPlatnosc() {
 						<td>29fr</td>
 					</tr>
 					<tr>
-						<td className='td_form1' colSpan={3}>
+						<td className='td_form1' colSpan={2}>
+							{current.matches('pytanieOnrWoP') && (
+								<FormNrWoP
+									nrWoP={current.context.WoPid}
+									handleOnFinish={handleOnFinishFormNrWoP}
+								/>
+							)}
 							{current.matches('pomniejszanieKwotyWoP') && (
 								<Form2
 									kwotaZnP={current.context.fetched.kwotaZnP}
@@ -130,7 +140,7 @@ function ZapoNaPlatnosc() {
 								/>
 							)}
 						</td>
-						<td colSpan={7}>
+						<td colSpan={8}>
 							{/* <pre style={{ textAlign: 'left' }}>{JSON.stringify({ value: current.value, context: current.context }, null, 2)}</pre> */}
 						</td>
 					</tr>

@@ -43,8 +43,14 @@ export const zapoNaPlatnoscMachine = createMachine(
 		states: {
 			idle: {
 				on: {
-					POBIERZ_ZWoP: 'pobieranieWoP',
+					POBIERZ_ZWoP: 'pytanieOnrWoP',
 				},
+			},
+			pytanieOnrWoP: {
+				on: {
+					// NR_WoP_POBRANY: 'pobieranieWoP'
+					NR_WoP_POBRANY: 'pobieranieWoP'
+				}
 			},
 			pobieranieWoP: {
 				// after: {
@@ -59,7 +65,7 @@ export const zapoNaPlatnoscMachine = createMachine(
 					src: (context, event) => fetchWoP(context.WoPid),
 					onDone: {
 						target: 'pobranoDaneWoP',
-						actions: 'pobieranieWoPonDone',
+						actions: ['pobieranieWoPonDone', 'updateFetched']
 					},
 					onError: {
 						target: 'failureWoP',
@@ -126,6 +132,7 @@ export const zapoNaPlatnoscMachine = createMachine(
 			// przelicz: (context, event: any) => console.log('event =', event),
 			// decrementAssign: assign({ potracenia: (context, event: any) => event.potracenia }),
 			// decrement: assign({ kwotaZnP: (context, event: any) => context.kwotaZnP - event.potracenia }),
+			updateFetched: assign({ kwotaZnP: (context, event: any) => context.fetched.kwotaZnP }),
 			przelicz: assign({ kwotaZnP: (context, event: any) => context.fetched.kwotaZnP - event.potracenia + event.doplataReklamacja }),
 			// pobieranieWoPonDone: (context, event) => console.log('event.data =', event.data),
 			pobieranieWoPonDone: assign({ fetched: (_, event: any) => event.data }),
