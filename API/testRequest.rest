@@ -16,7 +16,7 @@ content-type: application/json
         "created": "{{$datetime 'YYYY-MM-DD HH:mm:ss'}}"
 	}
 ###
-PATCH {{host}}/WoP/26 HTTP/1.1
+PATCH {{host}}/WoP/2 HTTP/1.1
 content-type: application/json
 
 {
@@ -39,7 +39,7 @@ GET {{host}}/WoP
     &searchString=admin
 
 ###
-GET {{host}}/WoP/3
+GET {{host}}/WoP/33
 
 ###
 DELETE {{host}}/WoP/54

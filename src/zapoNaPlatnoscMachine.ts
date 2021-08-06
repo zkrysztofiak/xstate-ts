@@ -33,8 +33,11 @@ const initialContext = {
 		doWyplaty: 0,
 	},
 };
-const fetchWoP = (WoPid: number) => fetch(`http://localhost:4001/WoP/${WoPid}`).then((response) => response.json());
-// export const zapoNaPlatnoscMachine = createMachine<Context>(
+const fetchWoP = (WoPid: number) =>
+	fetch(`http://localhost:4001/WoP/${WoPid}`)
+		.then((response) => response.json())
+		.catch(console.log);
+
 export const zapoNaPlatnoscMachine = createMachine(
 	{
 		id: 'zapoNaPlatnosc',
@@ -48,9 +51,15 @@ export const zapoNaPlatnoscMachine = createMachine(
 			},
 			pytanieOnrWoP: {
 				on: {
-					// NR_WoP_POBRANY: 'pobieranieWoP'
-					NR_WoP_POBRANY: 'pobieranieWoP'
-				}
+					NR_WoP_POBRANY:
+						// {
+						// 	NR_WoP_POBRANY: 'pobieranieWoP'
+						// }
+						{
+							target: 'pobieranieWoP',
+							actions: ['updateNrWoP', 'updateNrWoPconsoleLog'],
+						},
+				},
 			},
 			pobieranieWoP: {
 				// after: {
@@ -65,10 +74,10 @@ export const zapoNaPlatnoscMachine = createMachine(
 					src: (context, event) => fetchWoP(context.WoPid),
 					onDone: {
 						target: 'pobranoDaneWoP',
-						actions: ['pobieranieWoPonDone', 'updateFetched']
+						actions: ['pobieranieWoPonDone', 'updateFetched'],
 					},
 					onError: {
-						target: 'failureWoP',
+						target: 'pytanieOnrWoP',
 						actions: 'pobieranieWoPonError',
 						// actions: console.log((context, event: any) => event.data),
 					},
@@ -129,7 +138,8 @@ export const zapoNaPlatnoscMachine = createMachine(
 		actions: {
 			// actions: assign({ user: (context, event) => event.data })
 			// increment: assign({ kwotaZnP: (context) => context.kwotaZnP + 1 }),
-			// przelicz: (context, event: any) => console.log('event =', event),
+			updateNrWoPconsoleLog: (context, event: any) => console.log('event =', event),
+			updateNrWoP: assign({ WoPid: (context, event: any) => event.nrWoP }),
 			// decrementAssign: assign({ potracenia: (context, event: any) => event.potracenia }),
 			// decrement: assign({ kwotaZnP: (context, event: any) => context.kwotaZnP - event.potracenia }),
 			updateFetched: assign({ kwotaZnP: (context, event: any) => context.fetched.kwotaZnP }),

@@ -24,6 +24,14 @@
 		"doWyplaty": 0
 	},
 	{
+		"id": 33,
+		"kwotaZnP": 3300,
+		"doplataReklamacja": 329,
+		"potracenia": 33,
+		"nalezneSaldo": 0,
+		"doWyplaty": 0
+	},
+	{
 		"URL": "https://www.npmjs.com/package/react",
 		"URLshortened": "https://tnij.livechat.com/116",
 		"created": "2020-12-20 13:11:39",

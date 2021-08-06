@@ -125,23 +125,11 @@ function ZapoNaPlatnosc() {
 					</tr>
 					<tr>
 						<td className='td_form1' colSpan={2}>
-							{current.matches('pytanieOnrWoP') && (
-								<FormNrWoP
-									nrWoP={current.context.WoPid}
-									handleOnFinish={handleOnFinishFormNrWoP}
-								/>
-							)}
-							{current.matches('pomniejszanieKwotyWoP') && (
-								<Form2
-									kwotaZnP={current.context.fetched.kwotaZnP}
-									doplataReklamacja={current.context.fetched.doplataReklamacja}
-									potracenia={current.context.fetched.potracenia}
-									handleOnFinish={handleOnFinishForm2}
-								/>
-							)}
+							{current.matches('pytanieOnrWoP') && <FormNrWoP nrWoP={current.context.WoPid} handleOnFinish={handleOnFinishFormNrWoP} />}
+							{current.matches('pomniejszanieKwotyWoP') && <Form2 kwotaZnP={current.context.fetched.kwotaZnP} doplataReklamacja={current.context.fetched.doplataReklamacja} potracenia={current.context.fetched.potracenia} handleOnFinish={handleOnFinishForm2} />}
 						</td>
 						<td colSpan={8}>
-							{/* <pre style={{ textAlign: 'left' }}>{JSON.stringify({ value: current.value, context: current.context }, null, 2)}</pre> */}
+							<pre style={{ textAlign: 'left' }}>{JSON.stringify({ value: current.value, context: current.context }, null, 2)}</pre>
 						</td>
 					</tr>
 				</tbody>

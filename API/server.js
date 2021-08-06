@@ -92,3 +92,6 @@ app.get('/WoP/:id', (req, res) => {
 app.listen(port, host, () => console.log(`API listening on: http://${host}:${port}`));
 
 // nodemon server.js --ignore db.json
+
+// netstat -ano -p tcp |find "4001"
+// taskkill /PID 44464 /F
