@@ -4,22 +4,25 @@ import 'antd/dist/antd.css';
 import './App.css';
 import { useMachine } from '@xstate/react';
 import { zapoNaPlatnoscMachine } from './zapoNaPlatnoscMachine';
-// import { Form1 } from './Form1';
 import { Form2 } from './Form2';
 import { FormNrWoP } from './FormNrWoP';
+import { SOptions } from './myTypes';
 
 function ZapoNaPlatnosc() {
-	// interface Fields {
-	// 	kwotaZnP: number
-	// 	kwotaMinus: number
-	// }
 	const [current, send] = useMachine(zapoNaPlatnoscMachine);
-	// console.log(current.context.kwotaZnP);
-	// const handleOnClickForm1 = () => console.log('handleOnClick');
+	console.log('current.context.validateStatus=', current.context.validateStatus, 'current.context.error=', current.context.error);
+	// let myString: string = 'error';
+	// let myProp: SOptions = myString as SOptions;
+
+	const enumPropValidateStatus = current.context.validateStatus as SOptions;
+
 	const handleOnFinishForm2 = (values: any) => {
 		console.log(values);
 		console.log(values.potracenia);
-		send('DONE_POMNIEJSZONO', { potracenia: values.potracenia, doplataReklamacja: values.doplataReklamacja, pupa: 3434 });
+		send('DONE_POMNIEJSZONO', {
+			potracenia: values.potracenia,
+			doplataReklamacja: values.doplataReklamacja,
+		});
 	};
 	const handleOnFinishFormNrWoP = (values: any) => {
 		console.log(values);
@@ -108,7 +111,10 @@ function ZapoNaPlatnosc() {
 							</Button>
 						</td>
 						<td>
-							<Button type='primary' disabled={!current.matches('pomniejszanieKwotyWoP')} onClick={() => send('DONE_POMNIEJSZONO', { kwotaMinus: 66, dupa: 3435 })}>
+							<Button
+								type='primary'
+								disabled={!current.matches('pomniejszanieKwotyWoP')}
+								onClick={() => send('DONE_POMNIEJSZONO', { kwotaMinus: 66, dupa: 3435 })}>
 								Korekty
 							</Button>
 						</td>
@@ -125,8 +131,22 @@ function ZapoNaPlatnosc() {
 					</tr>
 					<tr>
 						<td className='td_form1' colSpan={2}>
-							{current.matches('pytanieOnrWoP') && <FormNrWoP nrWoP={current.context.WoPid} handleOnFinish={handleOnFinishFormNrWoP} />}
-							{current.matches('pomniejszanieKwotyWoP') && <Form2 kwotaZnP={current.context.fetched.kwotaZnP} doplataReklamacja={current.context.fetched.doplataReklamacja} potracenia={current.context.fetched.potracenia} handleOnFinish={handleOnFinishForm2} />}
+							{current.matches('pytanieOnrWoPForm') && (
+								<FormNrWoP
+									nrWoP={current.context.WoPid}
+									errorMessage={current.context.error.message}
+									validateStatus={enumPropValidateStatus}
+									handleOnFinish={handleOnFinishFormNrWoP}
+								/>
+							)}
+							{current.matches('pomniejszanieKwotyWoP') && (
+								<Form2
+									kwotaZnP={current.context.fetched.kwotaZnP}
+									doplataReklamacja={current.context.fetched.doplataReklamacja}
+									potracenia={current.context.fetched.potracenia}
+									handleOnFinish={handleOnFinishForm2}
+								/>
+							)}
 						</td>
 						<td colSpan={8}>
 							<pre style={{ textAlign: 'left' }}>{JSON.stringify({ value: current.value, context: current.context }, null, 2)}</pre>

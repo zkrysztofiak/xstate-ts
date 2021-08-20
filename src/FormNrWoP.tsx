@@ -1,14 +1,7 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
+import { FormNrWoPprops } from './myTypes';
 
-interface Fields {
-	nrWoP: number;
-}
-interface FormNrWoPprops extends Fields {
-	handleOnFinish: (changedFields: Fields) => void;
-}
-
-// export const Form2: React.FC<Form1Props> = ({ kwotaZnP, potracenia, handleOnFinish }) => {
 export const FormNrWoP: React.FC<FormNrWoPprops> = (props) => {
 	return (
 		<div className=''>
@@ -16,10 +9,21 @@ export const FormNrWoP: React.FC<FormNrWoPprops> = (props) => {
 				<Form
 					layout='vertical'
 					initialValues={{
-						nrWoP: 2
+						nrWoP: props.nrWoP,
 					}}
 					onFinish={props.handleOnFinish}>
-					<Form.Item label='Nr WoP' name='nrWoP'>
+					<Form.Item
+						label='Nr WoP'
+						name='nrWoP'
+						help={props.errorMessage}
+						// help='hhhheeellp!'
+						validateStatus={props.validateStatus} // validateStatus='error'
+						rules={[
+							{
+								required: true,
+								message: 'Coś wpisz 404 (Not Found)',
+							},
+						]}>
 						<Input />
 					</Form.Item>
 					<Form.Item>

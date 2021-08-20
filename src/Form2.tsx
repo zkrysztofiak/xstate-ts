@@ -1,19 +1,15 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
+import { Form2Props } from './myTypes';
 
-interface Fields {
-	kwotaZnP: number; //podstawa
-	doplataReklamacja?: number;
-	potracenia: number;
-	nalezneSaldo?: number; //wyliczona z algorytmu +/-
-	doWyplaty?: number; //wyliczone
-}
-interface Form1Props extends Fields {
-	handleOnFinish: (changedFields: Fields) => void;
-}
+// validateFields().then((values) => {
+// 	// Do something with value
+// });
 
-// export const Form2: React.FC<Form1Props> = ({ kwotaZnP, potracenia, handleOnFinish }) => {
-export const Form2: React.FC<Form1Props> = (props) => {
+const handleOnFinishFailed = (errorInfo: any) => {
+	console.log('Failed:', errorInfo);
+};
+export const Form2: React.FC<Form2Props> = (props) => {
 	return (
 		<div className=''>
 			<>
@@ -26,7 +22,8 @@ export const Form2: React.FC<Form1Props> = (props) => {
 						nalezneSaldo: props.nalezneSaldo,
 						doWyplaty: props.nalezneSaldo,
 					}}
-					onFinish={props.handleOnFinish}>
+					onFinish={props.handleOnFinish}
+					onFinishFailed={handleOnFinishFailed}>
 					<Form.Item label='KwotaZnP' name='kwotaZnP'>
 						<Input disabled={true} />
 					</Form.Item>

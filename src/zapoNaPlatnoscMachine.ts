@@ -1,43 +1,18 @@
-// As shorthand, in XState, events that only have a type can be represented just by their string type:
-// equivalent to { type: 'TIMER' }
-// const timerEvent = 'TIMER';
-
-// state transition (shorthand)
-// this is equivalent to { target: 'resolved' }
-// RESOLVE: 'resolved',
-
 import { createMachine, assign } from 'xstate';
-// interface Context {
-// 	WoPid: number;
-// 	kwotaZnP: number; //podstawa
-// 	doplataReklamacja?: number;
-// 	potracenia: number;
-// 	kwotaNaleznaSaldo?: number; //wyliczona z algorytmu +/-
-// 	kwotaDoWyplaty?: number; //wyliczone
-// }
+import axios from 'axios';
+import { initialContext } from './models/ZnP';
+// import { ZnPContext } from './myTypes';
+// import { fetchWoP } from './api/ZnP';
 
-// const initialContext: Context = {
-const initialContext = {
-	WoPid: 2,
-	kwotaZnP: 100, //podstawa
-	doplataReklamacja: 10,
-	potracenia: 20,
-	kwotaNaleznaSaldo: 0, //wyliczona z algorytmu +/-
-	kwotaDoWyplaty: 0, //wyliczone
-	error: undefined,
-	fetched: {
-		kwotaZnP: 0,
-		doplataReklamacja: 0,
-		potracenia: 0,
-		nalezneSaldo: 0,
-		doWyplaty: 0,
-	},
+const BASE_URL = 'http://localhost:4001';
+
+export const fetchWoP = async (WoPid: number) => {
+	const response = await axios.get<void>(`${BASE_URL}/WoP/${WoPid}`);
+	return response.data;
 };
-const fetchWoP = (WoPid: number) =>
-	fetch(`http://localhost:4001/WoP/${WoPid}`)
-		.then((response) => response.json())
-		.catch(console.log);
 
+// type Context = typeof initialContext;
+// export const zapoNaPlatnoscMachine = createMachine<ZnPContext, any, any>(
 export const zapoNaPlatnoscMachine = createMachine(
 	{
 		id: 'zapoNaPlatnosc',
@@ -46,39 +21,28 @@ export const zapoNaPlatnoscMachine = createMachine(
 		states: {
 			idle: {
 				on: {
-					POBIERZ_ZWoP: 'pytanieOnrWoP',
+					POBIERZ_ZWoP: 'pytanieOnrWoPForm',
 				},
 			},
-			pytanieOnrWoP: {
+			pytanieOnrWoPForm: {
 				on: {
-					NR_WoP_POBRANY:
-						// {
-						// 	NR_WoP_POBRANY: 'pobieranieWoP'
-						// }
-						{
-							target: 'pobieranieWoP',
-							actions: ['updateNrWoP', 'updateNrWoPconsoleLog'],
-						},
+					NR_WoP_POBRANY: {
+						target: 'pobieranieWoP',
+						actions: ['updateNrWoP', 'updateNrWoPconsoleLog'],
+					},
 				},
 			},
 			pobieranieWoP: {
-				// after: {
-				// 	500: 'pobranoDaneWoP',
-				// },
-				// on: {
-				// 	OK: 'pobranoDaneWoP',
-				// 	ERROR: 'failureWoP',
-				// },
 				invoke: {
-					id: 'getUser',
+					id: 'fetchWoP',
 					src: (context, event) => fetchWoP(context.WoPid),
 					onDone: {
 						target: 'pobranoDaneWoP',
 						actions: ['pobieranieWoPonDone', 'updateFetched'],
 					},
 					onError: {
-						target: 'pytanieOnrWoP',
-						actions: 'pobieranieWoPonError',
+						target: 'pytanieOnrWoPForm',
+						actions: ['pobieranieWoPonError', 'pobieranieWoPonError404'],
 						// actions: console.log((context, event: any) => event.data),
 					},
 				},
@@ -99,7 +63,6 @@ export const zapoNaPlatnoscMachine = createMachine(
 				on: {
 					DONE_POMNIEJSZONO: {
 						target: 'akceptacjaKierDWB',
-						// actions: ['decrement', 'decrementAssign'],
 						actions: 'przelicz',
 					},
 				},
@@ -136,17 +99,48 @@ export const zapoNaPlatnoscMachine = createMachine(
 	},
 	{
 		actions: {
-			// actions: assign({ user: (context, event) => event.data })
 			// increment: assign({ kwotaZnP: (context) => context.kwotaZnP + 1 }),
 			updateNrWoPconsoleLog: (context, event: any) => console.log('event =', event),
-			updateNrWoP: assign({ WoPid: (context, event: any) => event.nrWoP }),
-			// decrementAssign: assign({ potracenia: (context, event: any) => event.potracenia }),
-			// decrement: assign({ kwotaZnP: (context, event: any) => context.kwotaZnP - event.potracenia }),
+			updateNrWoP: assign({ WoPid: (context, { nrWoP }: any) => nrWoP }),
+			// updateNrWoP: assign({ WoPid: (context, event: any) => event.nrWoP }),
 			updateFetched: assign({ kwotaZnP: (context, event: any) => context.fetched.kwotaZnP }),
 			przelicz: assign({ kwotaZnP: (context, event: any) => context.fetched.kwotaZnP - event.potracenia + event.doplataReklamacja }),
 			// pobieranieWoPonDone: (context, event) => console.log('event.data =', event.data),
-			pobieranieWoPonDone: assign({ fetched: (_, event: any) => event.data }),
-			pobieranieWoPonError: assign({ error: (_, event: any) => event.data }),
+			pobieranieWoPonDone: assign({
+				fetched: (_, event: any) => event.data,
+				message: (_) => 'OK',
+				validateStatus: (_) => 'success',
+				error: (_, event: any) => {},
+			}),
+			pobieranieWoPonError: assign({
+				error: (_, event: any) => event.data,
+				message: (_, data) => data?.error?.message,
+				validateStatus: (_) => 'error',
+			}),
+			// pobieranieWoPonError: assign({ error: (_, event: any) => event.data, message: (_) => '404', validateStatus: (_) => 'error' }),
+			pobieranieWoPonError404: assign({ message: (_) => '404' }), // do wywalenia
 		},
 	}
 );
+// const fetchWoP = (WoPid: number) => {
+// 	return fetch(`http://localhost:4001/WoP/${WoPid}`)
+// 		.then((response) => {
+// 			if (!response.ok) {
+// 				console.log('!response.ok , response=', response);
+// 				throw new Error('Network response was not ok');
+// 			}
+// 			return response.json();
+// 		})
+// 		.catch((response) => {
+// 			console.log('!response.ok , response=', response);
+// 			return Promise.reject();
+// 		});
+// };
+
+// As shorthand, in XState, events that only have a type can be represented just by their string type:
+// equivalent to { type: 'TIMER' }
+// const timerEvent = 'TIMER';
+
+// state transition (shorthand)
+// this is equivalent to { target: 'resolved' }
+// RESOLVE: 'resolved',

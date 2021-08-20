@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import './index.css';
+import './App.css';
 import ZapoNaPlatnosc from './ZapoNaPlatnosc';
 // import TrafficLights from './TrafficLights';
 
