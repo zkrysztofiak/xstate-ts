@@ -110,6 +110,7 @@ export const zapoNaPlatnoscMachine = createMachine(
 				fetched: (_, event: any) => event.data,
 				message: (_) => 'OK',
 				validateStatus: (_) => 'success',
+				// error: (_, event: any) => event.data,
 				error: (_, event: any) => {},
 			}),
 			pobieranieWoPonError: assign({

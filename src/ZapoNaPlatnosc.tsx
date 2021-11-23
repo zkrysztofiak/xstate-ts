@@ -134,7 +134,7 @@ function ZapoNaPlatnosc() {
 							{current.matches('pytanieOnrWoPForm') && (
 								<FormNrWoP
 									nrWoP={current.context.WoPid}
-									errorMessage={current.context.error.message}
+									errorMessage={current.context.message}
 									validateStatus={enumPropValidateStatus}
 									handleOnFinish={handleOnFinishFormNrWoP}
 								/>

@@ -7,7 +7,7 @@ const initialContext = {
 	doWyplaty: 0, //wyliczone
 	error: {},
 	// error: { message: 'message init' },
-	message: 'OK',
+	message: '', // 'OK'
 	validateStatus: 'success',
 	fetched: {
 		kwotaZnP: 0,
